@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Barlow:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-neo-cyan: #00FFFF;
+  --color-neo-lime: #00FF00;
+  --color-neo-yellow: #FFFF00;
+  --color-neo-orange: #FF9933;
+  --color-neo-pink: #FF3399;
+  --color-neo-purple: #CC00FF;
+  --color-neo-red: #FF0000;
+  --color-neo-green: #00CC66;
+  --color-neo-blue: #6699FF;
+  --color-neo-black: #000000;
+  --color-neo-white: #FFFFFF;
+  --color-neo-off: #F8F9FA;
+  --color-neo-gray: #E0E0E0;
+  --font-sans: 'Barlow', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, monospace;
+  --font-head: 'Barlow Condensed', sans-serif;
+}
+
+body {
+  @apply bg-neo-off text-neo-black antialiased;
+}
+
+.neo-border {
+  @apply border-2 border-neo-black;
+}
+
+.neo-border-thick {
+  @apply border-[3px] border-neo-black;
+}
+
+.neo-shadow {
+  box-shadow: 4px 4px 0 theme('colors.neo-black');
+}
+
+.neo-shadow-sm {
+  box-shadow: 2px 2px 0 theme('colors.neo-black');
+}
+
+.neo-shadow-hover {
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.neo-shadow-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 theme('colors.neo-black');
+}
+
+

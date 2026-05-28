@@ -1,0 +1,6 @@
+{
+  "name": "ViewTube",
+  "description": "YouTube Analytics and Content Ideation dashboard",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
