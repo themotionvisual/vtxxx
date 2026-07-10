@@ -1,12 +1,13 @@
 import { LayoutDashboard, Video, Users, BrainCircuit, Settings, BarChart2 } from 'lucide-react';
 import { motion } from 'motion/react';
-import { useAppContext } from '../AppContext';
+import { useAppContext, AppView } from '../AppContext';
 
-const NAV_ITEMS = [
-  { label: 'DASHBOARD', active: true, color: 'bg-[#FF3399]' },
+const NAV_ITEMS: { label: string; color: string; view?: AppView }[] = [
+  { label: 'DASHBOARD', color: 'bg-[#FF3399]', view: 'dashboard' },
   { label: 'STUDIO', color: 'bg-[#FF3399]' },
   { label: 'PROJECTS', color: 'bg-neo-orange' },
   { label: 'ANALYTICS', color: 'bg-neo-yellow' },
+  { label: 'INTEGRATIONS', color: 'bg-neo-green', view: 'integrations' },
   { label: 'EDITOR', color: 'bg-neo-lime' },
   { label: 'SETTINGS', color: 'bg-neo-cyan' },
   { label: 'USER GUIDE', color: 'bg-neo-blue' },
@@ -14,7 +15,7 @@ const NAV_ITEMS = [
 ];
 
 export function Sidebar() {
-  const { isCompact } = useAppContext();
+  const { isCompact, activeView, setActiveView } = useAppContext();
 
   if (isCompact) return null; // Or render a collapsed version. In the image it's expanded.
 
@@ -24,7 +25,8 @@ export function Sidebar() {
         {NAV_ITEMS.map((item) => (
           <button
             key={item.label}
-            className={`w-full py-2.5 px-4 rounded-full flex items-center justify-center transition-all cursor-pointer neo-border-thick text-xs font-black uppercase tracking-widest ${item.color} ${item.color === 'bg-[#FF3399]' || item.color === 'bg-neo-purple' ? 'text-neo-white' : 'text-neo-black'} neo-shadow-hover`}
+            onClick={() => item.view && setActiveView(item.view)}
+            className={`w-full py-2.5 px-4 rounded-full flex items-center justify-center transition-all cursor-pointer neo-border-thick text-xs font-black uppercase tracking-widest ${item.color} ${item.color === 'bg-[#FF3399]' || item.color === 'bg-neo-purple' ? 'text-neo-white' : 'text-neo-black'} neo-shadow-hover ${item.view === activeView ? 'neo-shadow ring-2 ring-neo-black' : ''}`}
           >
             {item.label}
           </button>

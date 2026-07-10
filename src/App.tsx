@@ -3,15 +3,20 @@ import { TopBar } from './components/TopBar';
 import { MetricsOverview } from './components/MetricsOverview';
 import { VideoTable } from './components/VideoTable';
 import { AIBrain } from './components/AIBrain';
+import { IntegrationsHub } from './components/IntegrationsHub';
+import { useAppContext } from './AppContext';
 
 export default function App() {
+  const { activeView } = useAppContext();
+
   return (
     <div className="flex flex-col h-screen bg-neo-off text-neo-black overflow-hidden font-sans font-bold">
       <TopBar />
       <div className="flex flex-1 overflow-hidden relative">
         <Sidebar />
-        
+
         <main className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 relative z-10">
+          {activeView === 'integrations' ? <IntegrationsHub /> : <>
           <MetricsOverview />
           
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -189,6 +194,7 @@ export default function App() {
               </div>
             </div>
           </div>
+          </>}
         </main>
       </div>
     </div>
