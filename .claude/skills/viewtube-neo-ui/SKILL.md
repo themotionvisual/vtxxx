@@ -46,11 +46,19 @@ Colored bar atop every module/tile: full-bleed neon fill, `border-bottom: 3px so
 height 22–25px, leading icon box (square, contrasting neon fill, `border-right: 3px solid black`,
 centered 12–14px black icon), then the uppercase label at 11–14px/weight 999, padding-left 6px.
 
-### Stat tile
-White card, 3px border, radius 10px, `box-shadow: 4px 4px 0 rgba(10,10,10,.9)`,
-min-height ~78px. Header strip (above) + body: value at 23–34px/weight 1000/tracking -0.06em,
+### Stat tile / KPI card
+White card, 3px border, radius 10px, min-height ~78px. Shadow is the module's
+accent at half opacity, hard offset: `box-shadow: 4px 4px 0 var(--vt-summary-shadow,
+rgba(64,198,233,.5))` — KPI/summary cards get colored translucent shadows, not black.
+Header strip (above) + body: value at 23–34px/weight 1000/tracking -0.06em,
 note below at 8–9px/weight 900/uppercase/60% opacity. Tiles sit in a `grid` with
 `gap: 10px` and `grid-auto-rows: 1fr` so rows stay equal height.
+
+### Identity / hero card
+Same anatomy as a KPI card, scaled up: header strip (icon box + module label like
+"Selected Video" or the active category), then a body grid of media (16:9 framed
+thumbnail or glyph rail) beside title + sentence-case description. Same colored
+translucent shadow as the tiles so the whole summary row reads as one family.
 
 ### Nav pill / action button
 Pill (`rounded-full`) or 8–14px radius block, neon fill, `neo-border-thick`,
@@ -75,6 +83,14 @@ state shown by a filled black square/knob, not by color alone.
 ### Search bar
 Pill or rounded rect, white field, 3–4px border, leading icon in a neon square box,
 trailing clear "×" button in matching neon. Placeholder uppercase, letterspaced, 40% ink.
+
+### Patching React DOM from outside scripts
+A post-render fixup script (MutationObserver etc.) must never `remove()` or reparent
+React-owned nodes — React's next reconcile throws `Failed to execute 'removeChild'`
+and unmounts the whole tree (blank page). Hide with `display:none` + a `data-*` marker,
+store originals (e.g. colSpan) in `data-*`, and reset markers at the start of each pass
+so the fixup stays idempotent. Also scope any inline `style.transform` writes away from
+elements whose transform is CSS-driven (compact rotated headers), and clear stale ones.
 
 ## Anti-patterns (reject on sight)
 - Soft/blurred shadows, gradients on components, glassmorphism, thin gray `1px #ddd` borders.
