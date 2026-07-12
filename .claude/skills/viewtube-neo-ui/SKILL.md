@@ -73,6 +73,15 @@ darker ring (`ring-2 ring-black`) or fill swap — never opacity alone.
   (letter bottoms face RIGHT, reading bottom→top), spans in a `flex-direction: row`
   container so the second word/line stacks to the RIGHT of the first.
 - Zebra rows via translucent black overlay (`rgba(10,10,10,.07)`), selected row via translucent accent.
+- Fixed viewport: cap the scroll shell at N visible rows (`maxHeight = headHeight + N * rowHeight`,
+  `overflow-y: auto`) with sticky headers; compact mode keeps the same pixel height and simply fits
+  more rows. Style the vertical scrollbar via `::-webkit-scrollbar*` (white track, black-bordered
+  neon thumb) — and never set `scrollbar-width`/`scrollbar-color` alongside it: Chromium then
+  ignores the `::-webkit-scrollbar` styling entirely.
+- Column drag: build the drag image as a transparent (opacity ~.72) render of the whole column
+  (header chip + first ~12 formatted values) via `setDragImage`; highlight the drop target with one
+  absolutely-positioned full-column overlay rectangle inside the scroll shell (accent border +
+  translucent fill, `pointer-events: none`), repositioned on `dragover` — not per-cell classes.
 - Heatmap cells: `hexToRgba(groupColor, pct)` — intensity maps to value, still flat color.
 - Late-patch CSS with `!important` must be scoped `table:not(.is-compact-table)` vs `table.is-compact-table` — never unscoped.
 
