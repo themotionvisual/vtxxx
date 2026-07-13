@@ -86,6 +86,25 @@ darker ring (`ring-2 ring-black`) or fill swap — never opacity alone.
 - Image cells (thumbnails, flags): background is the standard cell color (`var(--vt-table-bg)`), never black — a black fill just looks like a broken/empty cell when the image fails. Add `onError` to hide the broken `<img>` so the plain cell shows through.
 - Late-patch CSS with `!important` must be scoped `table:not(.is-compact-table)` vs `table.is-compact-table` — never unscoped.
 
+### CSV import / export
+- Export the *active* table only, using its on-screen columns (`allColumns`) and values
+  (`getSortValue(row, table, colIdx)` — the same accessor the cells use, so it round-trips).
+  Serialize with `Papa.unparse({ fields, data })`, download via a `Blob` + object URL.
+  Join array cells (tags/topics) with `|`.
+- Import via a hidden `<input type=file>` triggered by the button; `Papa.parse(file, {header:true,
+  dynamicTyping:true})`, then write into the existing `csvData[table]` state (the same slot the
+  original data pipeline fed). Flat metric tables drop straight in (the cell accessor reads
+  `row[colName]`); the videos table needs a flat-row→nested-object map because its cells read
+  `item.metrics.*` / `item.thumbnail` etc.
+- Header tolerance: normalize keys (lowercase, strip non-alphanumerics) so "Engaged Views",
+  "engagedViews", and "engaged_views" all match. Accept both the display header and the raw field name.
+- Two gotchas that cost real debugging here:
+  1. **Stale memo** — the sorted/derived-data `useMemo` must list the CSV-data state in its deps,
+     or `setCsvData` updates silently never render.
+  2. **Flag column** — flag cells read `row.country` (a code). Re-imported geo rows key it as
+     "Flag"/"Country"; restore `row.country` as a **non-enumerable** property so the flag renders
+     without adding a stray visible column (visible columns come from `Object.keys(row)`).
+
 ### Toggle / checkbox
 White block with 3–4px border and radius ~14px; label tiny uppercase inside;
 state shown by a filled black square/knob, not by color alone.
