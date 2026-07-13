@@ -83,6 +83,7 @@ darker ring (`ring-2 ring-black`) or fill swap — never opacity alone.
   absolutely-positioned full-column overlay rectangle inside the scroll shell (accent border +
   translucent fill, `pointer-events: none`), repositioned on `dragover` — not per-cell classes.
 - Heatmap cells: `hexToRgba(groupColor, pct)` — intensity maps to value, still flat color.
+- Image cells (thumbnails, flags): background is the standard cell color (`var(--vt-table-bg)`), never black — a black fill just looks like a broken/empty cell when the image fails. Add `onError` to hide the broken `<img>` so the plain cell shows through.
 - Late-patch CSS with `!important` must be scoped `table:not(.is-compact-table)` vs `table.is-compact-table` — never unscoped.
 
 ### Toggle / checkbox
