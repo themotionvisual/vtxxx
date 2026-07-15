@@ -78,6 +78,19 @@ darker ring (`ring-2 ring-black`) or fill swap — never opacity alone.
   more rows. Style the vertical scrollbar via `::-webkit-scrollbar*` (white track, black-bordered
   neon thumb) — and never set `scrollbar-width`/`scrollbar-color` alongside it: Chromium then
   ignores the `::-webkit-scrollbar` styling entirely.
+- Sticky header seams: when the group / totals / column-name / filter rows are each
+  `position: sticky` at stacked `top` offsets, a 1px transparent hairline can open between
+  them while scrolling (body shows through). Give every sticky header cell an opaque
+  background and overlap adjacent sticky rows by ~1px (lower row `top -1`, `height +2`) so
+  no gap can appear. Higher-z rows paint over the overlap.
+- Hover-to-scroll zones: instead of a visible scrollbar, hide it (`scrollbar-width:none` +
+  `::-webkit-scrollbar{display:none}`) and drive scroll from the shell's `onMouseMove`
+  (top/bottom bands → scrollTop via the rAF loop; exclude the header region so sorting still
+  works). Mark the zones with non-interactive (`pointer-events:none`) overlays tinted
+  `rgba(150,200,255,.15)` + `mix-blend-mode:multiply` so blacks stay fully dark.
+- Offline flags/images: embed country flags as SVG `data:` URIs (from flag-icons, SVGO'd),
+  keyed by lowercase ISO code, rather than hitting a CDN. Image cells (thumbnails, flags)
+  lock to 16:9 via an inner `aspect-ratio:16/9; overflow:hidden` box with `object-fit:cover`.
 - Column drag: build the drag image as a transparent (opacity ~.72) render of the whole column
   (header chip + first ~12 formatted values) via `setDragImage`; highlight the drop target with one
   absolutely-positioned full-column overlay rectangle inside the scroll shell (accent border +
